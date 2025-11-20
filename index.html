@@ -8,7 +8,6 @@
       margin: 0;
       padding: 0;
       background: #000;
-      color: #fff;
       font-family: Arial, sans-serif;
     }
     iframe {
@@ -19,6 +18,8 @@
   </style>
 </head>
 <body>
+
+  <!-- Iframe principal -->
   <iframe 
     id="planilha"
     src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ-X8goQrLe5GbcQzmL8Z9FnBcQ1qgZUSci56LLleO-hYAMTPMJYAIr18PHOygl6NnRXbrs-hF8eUSu/pubhtml?gid=0&amp;single=true"
@@ -26,11 +27,26 @@
   </iframe>
 
   <script>
-    // Recarrega o iframe a cada 4 minutos (240000 ms)
-    setInterval(() => {
-      const iframe = document.getElementById("planilha");
-      iframe.src = iframe.src;
-    }, 240000);
+    function atualizarSemPiscar() {
+      const iframeAtual = document.getElementById("planilha");
+
+      // cria um novo iframe oculto para carregar por trás
+      const iframeNovo = document.createElement("iframe");
+      iframeNovo.style.display = "none";
+      iframeNovo.src = iframeAtual.src;
+
+      document.body.appendChild(iframeNovo);
+
+      // quando o iframe novo terminar de carregar → troca sem piscar
+      iframeNovo.onload = () => {
+        iframeAtual.src = iframeNovo.src;
+        document.body.removeChild(iframeNovo);
+      };
+    }
+
+    // Atualiza a cada 6 minutos (360.000 ms)
+    setInterval(atualizarSemPiscar, 60s);
   </script>
+
 </body>
 </html>
