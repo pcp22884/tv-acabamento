@@ -19,7 +19,6 @@
 </head>
 <body>
 
-  <!-- Iframe principal -->
   <iframe 
     id="planilha"
     src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ-X8goQrLe5GbcQzmL8Z9FnBcQ1qgZUSci56LLleO-hYAMTPMJYAIr18PHOygl6NnRXbrs-hF8eUSu/pubhtml?gid=0&amp;single=true"
@@ -28,25 +27,26 @@
 
   <script>
     function atualizarSemPiscar() {
-      const iframeAtual = document.getElementById("planilha");
+      const url = document.getElementById("planilha").src;
 
-      // cria um novo iframe oculto para carregar por trás
+      // cria iframe oculto
       const iframeNovo = document.createElement("iframe");
+      iframeNovo.src = url;
       iframeNovo.style.display = "none";
-      iframeNovo.src = iframeAtual.src;
 
       document.body.appendChild(iframeNovo);
 
-      // quando o iframe novo terminar de carregar → troca sem piscar
       iframeNovo.onload = () => {
-        iframeAtual.src = iframeNovo.src;
+        const iframeAtual = document.getElementById("planilha");
+        iframeAtual.src = url;
+
+        // remove o iframe oculto
         document.body.removeChild(iframeNovo);
       };
     }
 
-    // Atualiza a cada 6 minutos (360.000 ms)
-    setInterval(atualizarSemPiscar, 1000);
-
+    // Atualiza A CADA 6 MINUTOS (360.000 ms)
+    setInterval(atualizarSemPiscar, 360000);
   </script>
 
 </body>
